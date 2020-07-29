@@ -8,6 +8,7 @@ pip install torchvision
 pip install matplotlib
 pip install sklearn
 pip install jupyter
+pip install psutil
 ```
 
 # Running The Code
