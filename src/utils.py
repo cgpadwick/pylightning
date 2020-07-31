@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
-import torch
+import psutil
 from sklearn.metrics import confusion_matrix, accuracy_score
+import torch
 
 
 def display_grid_data(data_loader, classmap, cmap='gray', figsize=(50, 50),
@@ -41,3 +42,7 @@ def measure_accuracy(labels, predictions, all_possible_labels):
 
     print('\nAccuracy Score:')
     print(accuracy_score(labels, predictions))
+
+
+def get_num_cpus(logical=False):
+    return psutil.cpu_count(logical)
