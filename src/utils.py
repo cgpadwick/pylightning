@@ -1,7 +1,16 @@
+import base64
+from io import BytesIO
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import psutil
+from PIL import Image
 from sklearn.metrics import confusion_matrix, accuracy_score
 import torch
+
+from bokeh.plotting import figure, show, output_notebook
+from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper
+from bokeh.palettes import Spectral10
 
 
 def display_grid_data(data_loader, classmap, cmap='gray', figsize=(50, 50),
@@ -46,3 +55,66 @@ def measure_accuracy(labels, predictions, all_possible_labels):
 
 def get_num_cpus(logical=False):
     return psutil.cpu_count(logical)
+
+
+def embeddable_image(data):
+    img_data = data * 255
+    img_data = img_data.astype(np.uint8)
+    image = Image.fromarray(img_data, mode='L').resize((64, 64), Image.BICUBIC)
+    buffer = BytesIO()
+    image.save(buffer, format='png')
+    for_encoding = buffer.getvalue()
+    return 'data:image/png;base64,' + base64.b64encode(for_encoding).decode()
+
+
+def plot_interactive_embedding(embedding_data,
+                               orig_data,
+                               labels,
+                               classes,
+                               palette=Spectral10,
+                               title='Plot Title',
+                               width=600,
+                               height=600):
+
+    output_notebook()
+
+    df = pd.DataFrame(embedding_data, columns=('x', 'y'))
+    df['example'] = [str(classes[x]) for x in labels]
+    df['image'] = list(map(embeddable_image, orig_data))
+
+    factors = []
+    for i in classes.values():
+        factors.append(str(i))
+    datasource = ColumnDataSource(df)
+    color_mapping = CategoricalColorMapper(factors=factors,
+                                           palette=palette)
+
+    plot_figure = figure(
+        title=title,
+        plot_width=width,
+        plot_height=height,
+        tools=('pan, wheel_zoom, reset')
+    )
+
+    plot_figure.add_tools(HoverTool(tooltips="""
+    <div>
+        <div>
+            <img src='@image' style='float: left; margin: 5px 5px 5px 5px'/>
+        </div>
+        <div>
+            <span style='font-size: 16px; color: #224499'>Example:</span>
+            <span style='font-size: 18px'>@example</span>
+        </div>
+    </div>
+    """))
+
+    plot_figure.circle(
+        'x',
+        'y',
+        source=datasource,
+        color=dict(field='example', transform=color_mapping),
+        line_alpha=0.6,
+        fill_alpha=0.6,
+        size=4
+    )
+    show(plot_figure)
