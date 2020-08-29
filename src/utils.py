@@ -126,3 +126,27 @@ def plot_interactive_embedding(embedding_data,
         size=4
     )
     show(plot_figure)
+
+
+def plot_autoencoder_results(batch, logits, ncols=8):
+    nimages = batch.size()[0]
+    nrows = nimages // ncols
+    f, axarr = plt.subplots(nrows, ncols, figsize=(20, 20))
+    imgidx = 0
+    for row in range(nrows):
+        colidx = 0
+        while colidx < ncols - 1:
+            img = batch[imgidx, :].numpy().squeeze()
+            reconstructed_img = logits[imgidx, ].detach().numpy().squeeze()
+            axarr[row, colidx].imshow(img, cmap='gray')
+            axarr[row, colidx].set_xticks([])
+            axarr[row, colidx].set_yticks([])
+            axarr[row, colidx].set_title('Image', size=20)
+            colidx = colidx + 1
+            axarr[row, colidx].imshow(reconstructed_img, cmap='gray')
+            axarr[row, colidx].set_xticks([])
+            axarr[row, colidx].set_yticks([])
+            axarr[row, colidx].set_title('Reconstruction', size=20)
+            colidx = colidx + 1
+            imgidx += 1
+    f.tight_layout(pad=0.1, w_pad=0.0)
