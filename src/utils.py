@@ -5,12 +5,15 @@ import numpy as np
 import pandas as pd
 import psutil
 from PIL import Image
+import seaborn as sns
 from sklearn.metrics import confusion_matrix, accuracy_score
 import torch
 
 from bokeh.plotting import figure, show, output_notebook
 from bokeh.models import HoverTool, ColumnDataSource, CategoricalColorMapper
 from bokeh.palettes import Spectral10
+
+sns.set()
 
 
 def display_grid_data(data_loader, classmap, cmap='gray', figsize=(50, 50),
@@ -44,13 +47,18 @@ def model_predictions(data_loader, model):
     return labels, predictions
 
 
-def measure_accuracy(labels, predictions, all_possible_labels):
-    cm = confusion_matrix(labels, predictions, labels=all_possible_labels)
-    print('Conf Matrix:')
-    print(cm)
+def measure_accuracy(labels, predictions, classes, plot=True):
+    cm = confusion_matrix(labels, predictions, labels=list(classes.keys()))
+    df = pd.DataFrame(data=cm,
+                      index=classes.values(),
+                      columns=classes.values())
+    acc = accuracy_score(labels, predictions)
 
-    print('\nAccuracy Score:')
-    print(accuracy_score(labels, predictions))
+    if plot:
+        f, ax = plt.subplots(figsize=(9, 6))
+        sns.heatmap(df, annot=True, fmt="d", linewidths=.5, ax=ax)
+
+    return df, acc
 
 
 def get_num_cpus(logical=False):
