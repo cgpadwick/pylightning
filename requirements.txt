@@ -1,0 +1,14 @@
+pytorch-lightning
+torchvision
+matplotlib
+sklearn
+jupyter
+psutil
+pandas
+seaborn
+umap-learn
+numpy
+bokeh
+
+
+

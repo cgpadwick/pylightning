@@ -3,12 +3,7 @@
 ```
 virtualenv pl -p python3.6
 source pl/bin/activate
-pip install pytorch-lightning
-pip install torchvision
-pip install matplotlib
-pip install sklearn
-pip install jupyter
-pip install psutil
+pip install -r requirements.txt
 ```
 
 # Running The Code
