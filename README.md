@@ -6,6 +6,15 @@ source pl/bin/activate
 pip install -r requirements.txt
 ```
 
+# Using Conda
+
+```
+conda create --name venv
+conda activate venv
+conda install pip 
+pip install -r requirements.txt
+```
+
 # Running The Code
 
 Start up jupyter with the following command:
