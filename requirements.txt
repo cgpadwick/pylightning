@@ -1,9 +1,11 @@
 pytorch-lightning
 torchvision
 torchviz
+torchsummary
 matplotlib
 sklearn
 imgaug
+ipyplot
 jupyter
 psutil
 pandas
