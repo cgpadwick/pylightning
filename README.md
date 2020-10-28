@@ -11,7 +11,8 @@ pip install -r requirements.txt
 ```
 conda create --name venv
 conda activate venv
-conda install pip 
+conda install pip
+conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
 pip install -r requirements.txt
 ```
 
