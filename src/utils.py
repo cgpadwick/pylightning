@@ -99,8 +99,8 @@ def plot_interactive_embedding(embedding_data,
 
     plot_figure = figure(
         title=title,
-        plot_width=width,
-        plot_height=height,
+        width=width,
+        height=height,
         tools=('pan, wheel_zoom, reset')
     )
 

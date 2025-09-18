@@ -1,9 +1,10 @@
-pytorch-lightning
+pytorch-lightning<2.0.0
 torchvision
 torchviz
 torchsummary
+tensorboard
 matplotlib
-sklearn
+scikit-learn
 imgaug
 ipyplot
 jupyter

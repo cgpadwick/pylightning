@@ -1,8 +1,8 @@
 # Install the environment
 
 ```
-virtualenv pl -p python3.6
-source pl/bin/activate
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
